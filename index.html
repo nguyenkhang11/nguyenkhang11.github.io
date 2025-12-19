@@ -56,25 +56,42 @@ nav{
 }
 .split{
   display:grid;
-  grid-template-columns:1fr 1.4fr;
-  gap:50px;
+  grid-template-columns:1fr 1.2fr; /* Điều chỉnh lại tỷ lệ cột */
+  gap:60px;
 }
 
-/* INTRO */
+/* INTRO - PHẦN CẬP NHẬT MỚI */
 .intro{
   position:sticky;
   top:100px;
   align-self:start;
+  text-align: center; /* Căn giữa nội dung text */
+  padding-top: 20px;  /* Đẩy nội dung xuống một chút */
 }
 .avatar{
-  width:120px;height:120px;
+  width:180px; /* Tăng kích thước avatar */
+  height:180px;
   border-radius:50%;
   object-fit:cover;
-  border:4px solid var(--accent);
-  margin-bottom:20px;
+  border:6px solid white; /* Viền trắng dày tạo hiệu ứng nổi */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho sang */
+  margin-bottom:25px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
-.intro h1{margin:0 0 10px}
-.intro p{color:var(--sub);line-height:1.6}
+.intro h1{
+    margin:0 0 15px;
+    font-weight: 800;
+    font-size: 2rem;
+}
+.intro p{
+    color:var(--sub);
+    line-height:1.8;
+    font-size: 1.05rem;
+    max-width: 400px; /* Giới hạn độ rộng để text không bị dàn quá dài */
+    margin: 0 auto;
+}
 
 /* BLOG */
 .blog-item{
@@ -88,26 +105,13 @@ nav{
 .blog-item:hover{
   transform:translateY(-6px);
   border-color:var(--accent);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
-.blog-item h3{margin:10px 0}
-.blog-item p{color:var(--sub)}
+.blog-item h3{margin:10px 0; font-size: 1.4rem;}
+.blog-item p{color:var(--sub); line-height: 1.6}
 .tag{
   font-size:.75rem;
   font-weight:700;
-  color:var(--accent);
-}
-
-/* SKILLS */
-.skills{
-  margin-top:80px;
-}
-.skills span{
-  display:inline-block;
-  padding:10px 20px;
-  border-radius:999px;
-  background:#eef2ff;
-  margin:6px;
-  font-weight:600;
   color:var(--accent);
 }
 
@@ -117,12 +121,13 @@ footer{
   padding:60px 20px;
   border-top:1px solid var(--border);
   color:var(--sub);
+  margin-top: 50px;
 }
 
 /* RESPONSIVE */
 @media(max-width:900px){
   .split{grid-template-columns:1fr}
-  .intro{position:relative;top:0}
+  .intro{position:relative;top:0; padding-bottom: 40px; border-bottom: 1px solid var(--border)}
 }
 </style>
 </head>
@@ -131,7 +136,7 @@ footer{
 
 <nav>
   <div class="nav-inner">
-    <strong style="color:var(--accent)">Khang Blog</strong>
+    <strong style="color:var(--accent); font-size: 1.2rem;">Khang Blog</strong>
     <div>
       <a href="#">Home</a>
       <a href="#">Blog</a>
@@ -144,42 +149,30 @@ footer{
 
   <section class="split">
 
-    <!-- LEFT -->
     <aside class="intro">
       <img src="avatar.jpg" class="avatar" alt="Khang">
       <h1>Nguyễn Quốc Khang</h1>
       <p>
-        Sinh viên CNTT, yêu thích Web & Networking.  
-        Blog này dùng để ghi lại kiến thức và quá trình học lập trình 🚀
+        Chào bạn! Mình là Khang, sinh viên trường ĐH Công Nghệ Thành Phố Hồ Chí Minh, chuyên ngành Công nghệ phần mềm với niềm đam mê mãnh liệt dành cho phát triển Web và quản trị hệ thống mạng. <br><br>
+        Đây là không gian nhỏ nơi mình chia sẻ những bài học thực tế, các dự án cá nhân và hành trình khám phá thế giới công nghệ mỗi ngày. Hy vọng những chia sẻ của mình sẽ giúp ích được cho cộng đồng học lập trình! 
       </p>
     </aside>
 
-    <!-- RIGHT -->
     <main id="blog"></main>
 
-  </section>
-
-  <!-- SKILLS -->
-  <section class="skills">
-    <h2>Kỹ năng</h2>
-    <span>HTML / CSS</span>
-    <span>JavaScript</span>
-    <span>Node.js</span>
-    <span>Networking</span>
-    <span>Git / GitHub</span>
   </section>
 
 </div>
 
 <footer>
-© 2025 • Nguyễn Quốc Khang • Personal Tech Blog
+© 2025 • Nguyễn Quốc Khang • Blog Cá Nhân
 </footer>
 
 <script>
 const posts=[
- {cat:"WEB",title:"Flexbox & Grid cho người mới",date:"12/12/2025",desc:"Cách xây dựng layout hiện đại, dễ mở rộng."},
- {cat:"JS",title:"Async/Await là gì?",date:"10/12/2025",desc:"Hiểu rõ bất đồng bộ trong JavaScript."},
- {cat:"NETWORK",title:"TCP vs UDP",date:"08/12/2025",desc:"So sánh hai giao thức mạng nền tảng."}
+ {cat:"WEB",title:"Flexbox & Grid cho người mới",date:"12/12/2025",desc:"Cách xây dựng layout hiện đại, dễ bảo trì và tối ưu cho mọi thiết kế giao diện hiện nay."},
+ {cat:"JS",title:"Async/Await là gì?",date:"10/12/2025",desc:"Nắm vững cách xử lý các tác vụ bất đồng bộ một cách đồng bộ hơn, giúp code của bạn sạch sẽ và dễ đọc hơn."},
+ {cat:"NETWORK",title:"TCP vs UDP",date:"08/12/2025",desc:"Phân tích sự khác biệt cốt lõi giữa hai giao thức truyền tải quan trọng nhất trong hạ tầng mạng Internet."}
 ];
 
 const blog=document.getElementById("blog");
@@ -189,7 +182,7 @@ posts.forEach(p=>{
       <div class="tag">${p.cat} • ${p.date}</div>
       <h3>${p.title}</h3>
       <p>${p.desc}</p>
-      <a href="#" style="color:var(--accent);font-weight:600">Đọc tiếp →</a>
+      <a href="#" style="color:var(--accent);font-weight:600; text-decoration: none;">Đọc tiếp →</a>
     </article>
   `;
 });
