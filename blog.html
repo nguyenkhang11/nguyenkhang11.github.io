@@ -34,9 +34,10 @@
 <script>
     const blogContainer = document.getElementById('blog-list');
 
-    // SỬA LỖI Ở ĐÂY: Dùng đúng tên 'blogData' (chữ D hoa) để khớp với file JS của bạn
-    if (typeof blogData !== 'undefined') {
-        blogData.forEach(post => {
+    // SỬA: Dùng tên 'blogdata' (chữ thường) để khớp với file trên GitHub của bạn
+    // Kiểm tra xem biến blogdata có tồn tại không
+    if (typeof blogdata !== 'undefined') {
+        blogdata.forEach(post => {
             blogContainer.innerHTML += `
                 <article class="card">
                     <span class="tag">${post.cat} • ${post.date}</span>
@@ -48,13 +49,13 @@
             `;
         });
     } else {
-        // Thông báo lỗi nếu tên biến vẫn sai
-        console.error("Lỗi: Không tìm thấy biến 'blogData'.");
+        // Nếu vẫn lỗi, hiện thông báo chi tiết
+        console.error("Vẫn chưa tìm thấy biến 'blogdata'");
         blogContainer.innerHTML = `
-            <div style="text-align:center; color: red; padding: 20px; border: 1px dashed red;">
-                <h3>⚠️ Lỗi tải dữ liệu</h3>
-                <p>Không tìm thấy biến <b>blogData</b>.</p>
-                <p>Hãy kiểm tra file <i>blog-data.js</i> xem dòng đầu tiên có phải là <code>const blogData = [</code> không?</p>
+            <div style="text-align:center; color: red; padding:30px; border:1px dashed red;">
+                <h3>⚠️ Vẫn chưa tải được dữ liệu</h3>
+                <p>Code đang tìm biến tên là: <b>blogdata</b> (chữ thường)</p>
+                <p>Bạn hãy mở file <i>blog-data.js</i> và kiểm tra dòng đầu tiên xem có phải là <code>const blogdata = [</code> không nhé.</p>
             </div>
         `;
     }
