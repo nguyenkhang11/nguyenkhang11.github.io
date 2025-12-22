@@ -1,4 +1,3 @@
-// ĐỔI TÊN BIẾN THÀNH postsData CHO KHÁC BIỆT
 const postsData = [
   {
     id: 1,
@@ -165,7 +164,7 @@ Content-Length: 50
       <h3>3. Layer 4 vs Layer 7 Load Balancing</h3>
       <ul>
         <li><strong>Layer 4 (Transport):</strong> Chỉ dựa vào IP và Port. Tốc độ cực nhanh.</li>
-        <li><strong>Layer 7 (Application):</strong> Đọc được nội dung HTTP (Cookie, Header, URL). Có thể định tuyến thông minh (ví dụ: URL ảnh `.jpg` qua server chứa ảnh, URL API qua server xử lý logic).</li>
+        <li><strong>Layer 7 (Application):</strong> Đọc được nội dung HTTP (Cookie, Header, URL). Có thể định tuyến thông minh (ví dụ: URL ảnh .jpg qua server chứa ảnh, URL API qua server xử lý logic).</li>
       </ul>
       <p>Nginx và HAProxy là hai phần mềm Load Balancing mã nguồn mở nổi tiếng nhất hiện nay.</p>
     `
