@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Bài Viết | Nguyễn Quốc Khang</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .post-content { background: white; padding: 40px; border-radius: 20px; border: 1px solid var(--border); }
+        .post-content h3 { color: var(--text); margin-top: 30px; font-size: 1.4rem; }
+        .post-content p { color: var(--sub); font-size: 1.1rem; line-height: 1.8; }
+        .post-content ul, .post-content ol { color: var(--sub); font-size: 1.05rem; line-height: 1.8; margin-left: 20px;}
+        .post-content li { margin-bottom: 10px; }
+        .post-meta { color: var(--sub); margin-bottom: 20px; font-style: italic; }
+        pre { overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <strong style="color:var(--accent); font-size: 1.3rem;">Khang Blog</strong>
+        <div>
+            <a href="index.html" class="menu-link">Home</a>
+            <a href="blog.html" class="menu-link active">Blog</a>
+            <a href="about.html" class="menu-link">About</a>
+            <a href="contact.html" class="menu-link">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <a href="blog.html" class="btn" style="background:transparent; color:var(--sub); border:1px solid var(--border); margin-bottom: 20px;">← Quay lại danh sách</a>
+
+    <div id="post-container">
+        </div>
+</div>
+
+<footer>© 2025 • Nguyễn Quốc Khang</footer>
+
+<script src="blog-data.js"></script> 
+<script>
+    // Lấy ID từ URL (ví dụ: post.html?id=1)
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = parseInt(urlParams.get('id'));
+
+    // Tìm bài viết trong mảng blogData
+    const post = blogData.find(p => p.id === postId);
+
+    const container = document.getElementById('post-container');
+
+    if (post) {
+        // Nếu tìm thấy bài viết
+        document.title = post.title + " | Khang Blog";
+        container.innerHTML = `
+            <article class="post-content">
+                <span class="tag" style="font-size: 1rem;">${post.cat}</span>
+                <h1 style="font-size: 2.5rem; margin: 10px 0;">${post.title}</h1>
+                <div class="post-meta">Đăng ngày: ${post.date} • Tác giả: Nguyễn Quốc Khang</div>
+                <hr style="border: 0; border-top: 1px solid var(--border); margin: 30px 0;">
+                
+                <div class="content-body">
+                    ${post.content} 
+                </div>
+            </article>
+        `;
+    } else {
+        // Nếu không tìm thấy (ID sai)
+        container.innerHTML = `
+            <div style="text-align:center; padding: 50px;">
+                <h1>404 - Không tìm thấy bài viết</h1>
+                <p>Bài viết bạn tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+                <a href="blog.html" class="btn">Về trang chủ Blog</a>
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>
