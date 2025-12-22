@@ -7,109 +7,120 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. CSS CƠ BẢN (GIỮ NGUYÊN) --- */
+        /* --- 1. CSS CƠ BẢN --- */
         :root{ --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --sub:#475569; --accent:#6366f1; --border:#e2e8f0; }
         *{box-sizing:border-box}
-        body{ margin:0; font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height: 1.6; }
+        body{ margin:0; font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height: 1.8; }
 
         /* NAV */
-        nav{ position:sticky; top:0; background:rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom:1px solid var(--border); z-index:100; }
+        nav{ position:sticky; top:0; background:rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom:1px solid var(--border); z-index:100; }
         .nav-inner{ max-width:1200px; margin:auto; padding:16px 20px; display:flex; justify-content:space-between; align-items: center; }
         .nav-inner a{ margin-left:20px; text-decoration:none; color:var(--sub); font-weight:500; transition: 0.2s; cursor: pointer;}
         .nav-inner a:hover, .nav-inner a.active{ color:var(--accent); }
 
         /* LAYOUT */
-        .container{ max-width:1000px; margin:auto; padding:40px 20px; min-height: 80vh; }
-        h1.page-title{ text-align: center; margin-bottom: 40px; }
+        .container{ max-width:1100px; margin:auto; padding:40px 20px; min-height: 80vh; }
+        h1.page-title{ text-align: center; margin-bottom: 50px; font-weight: 800; font-size: 2.5rem; color: var(--text); }
         
-        /* GRID BÀI VIẾT */
-        .grid-layout{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .card{ background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--border); transition: 0.3s; display: flex; flex-direction: column; }
-        .card:hover{ border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .card h3{ margin: 10px 0; font-size: 1.25rem; }
-        .card p { flex-grow: 1; color: var(--sub); font-size: 0.95rem; }
-        .tag{ font-size:0.8rem; font-weight:700; color:var(--accent); text-transform: uppercase; }
+        /* GRID BÀI VIẾT (CARD) */
+        .grid-layout{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px; }
         
-        /* NÚT ĐỌC TIẾP */
+        .card{ 
+            background: var(--card); 
+            border-radius: 20px; 
+            border: 1px solid var(--border); 
+            transition: 0.3s; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; /* Để ảnh không bị tràn bo góc */
+            height: 100%;
+        }
+        .card:hover{ border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.2); }
+        
+        /* Ảnh Thumbnail trong Card */
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card h3{ margin: 12px 0; font-size: 1.35rem; line-height: 1.4; }
+        .card p { flex-grow: 1; color: var(--sub); font-size: 0.95rem; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .tag{ font-size:0.75rem; font-weight:800; color:var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+        
         .read-more-btn {
-            display: inline-block;
-            margin-top: 15px;
+            margin-top: auto;
             color: var(--accent);
-            font-weight: 600;
+            font-weight: 700;
             text-decoration: none;
             cursor: pointer;
             border: none;
-            background: none;
-            padding: 0;
-            font-size: 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.2s;
         }
-        .read-more-btn:hover { text-decoration: underline; }
+        .read-more-btn:hover { background: var(--accent); color: white; }
 
-        /* --- 2. CSS CHO POPUP (MODAL) - PHẦN MỚI --- */
+        /* --- 2. CSS POPUP (MODAL) --- */
         .modal {
-            display: none; /* Mặc định ẩn */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.6); /* Màu nền đen mờ */
-            backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            align-items: center; justify-content: center; padding: 20px;
         }
 
         .modal-content {
-            background-color: #fff;
-            width: 100%;
-            max-width: 800px;
-            max-height: 90vh; /* Chiều cao tối đa 90% màn hình */
-            border-radius: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            animation: slideUp 0.3s ease-out;
+            background-color: #fff; width: 100%; max-width: 900px; max-height: 95vh;
+            border-radius: 24px; position: relative; display: flex; flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease-out;
+            overflow: hidden;
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes modalFadeIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         .modal-header {
-            padding: 20px 30px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            padding: 20px 30px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; background: white; z-index: 2;
         }
 
-        .close-btn {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            line-height: 1;
-            transition: 0.2s;
-        }
-        .close-btn:hover { color: red; }
+        .close-btn { font-size: 32px; color: var(--sub); cursor: pointer; transition: 0.2s; line-height: 0.5; }
+        .close-btn:hover { color: #ef4444; transform: rotate(90deg); }
 
         .modal-body {
-            padding: 30px;
-            overflow-y: auto; /* Cho phép cuộn nội dung nếu quá dài */
-            font-size: 1.1rem;
-            color: #334155;
+            padding: 0; overflow-y: auto; scroll-behavior: smooth;
         }
-        
-        /* Style cho nội dung bài viết bên trong Popup */
-        .modal-body h3 { margin-top: 25px; color: var(--text); }
-        .modal-body pre { background: #f1f5f9; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; border: 1px solid #e2e8f0; }
-        .modal-body ul, .modal-body ol { margin-left: 20px; }
-        .modal-body li { margin-bottom: 8px; }
 
+        /* Ảnh lớn trong bài viết chi tiết */
+        .modal-hero-img {
+            width: 100%; height: 350px; object-fit: cover;
+        }
+
+        .modal-text-content { padding: 40px 50px; }
+
+        /* Style nội dung bài viết */
+        .content-area h3 { color: var(--text); font-size: 1.6rem; margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 15px; }
+        .content-area p { margin-bottom: 20px; font-size: 1.1rem; color: #334155; text-align: justify; }
+        .content-area ul, .content-area ol { margin-bottom: 20px; padding-left: 25px; color: #334155; }
+        .content-area li { margin-bottom: 10px; }
+        .content-area pre {
+            background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 12px;
+            overflow-x: auto; font-family: 'Consolas', monospace; font-size: 0.95rem; margin: 25px 0;
+            border: 1px solid #475569;
+        }
+        .content-area code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #d946ef; font-weight: 600; font-family: monospace; }
+        .content-area strong { color: var(--text); font-weight: 700; }
+
+        /* Responsive */
+        @media(max-width: 768px){
+            .modal-text-content { padding: 25px; }
+            .modal-hero-img { height: 200px; }
+            .grid-layout { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -127,7 +138,7 @@
 </nav>
 
 <div class="container">
-    <h1 class="page-title">Blog Lập Trình Mạng</h1>
+    <h1 class="page-title">Kiến Thức Lập Trình Mạng</h1>
     <div class="grid-layout" id="blog-list">
         </div>
 </div>
@@ -141,217 +152,472 @@
 <div id="postModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <div style="padding-right: 20px;">
+            <div>
                 <span id="m-tag" class="tag">CAT</span>
-                <h2 id="m-title" style="margin: 5px 0 0; font-size: 1.8rem;">Tiêu đề bài viết</h2>
-                <span id="m-date" style="font-size: 0.9rem; color: var(--sub); font-style: italic;">Ngày đăng</span>
+                <span id="m-date" style="font-size: 0.85rem; color: var(--sub); margin-left: 10px;">Date</span>
             </div>
             <span class="close-btn" onclick="closeModal()">&times;</span>
         </div>
-        <div class="modal-body" id="m-body">
+        
+        <div class="modal-body">
+            <img src="" id="m-img" class="modal-hero-img" alt="Cover Image">
+            
+            <div class="modal-text-content">
+                <h1 id="m-title" style="font-size: 2.2rem; margin-top: 0; line-height: 1.3;">Tiêu đề</h1>
+                <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+                <div id="m-content" class="content-area">
+                    </div>
             </div>
+        </div>
     </div>
 </div>
 
 <script>
-    // DỮ LIỆU BÀI VIẾT (Nằm trực tiếp ở đây, không cần file ngoài)
+    // Dữ liệu bài viết chi tiết (>500 từ/bài)
     const posts = [
         {
             id: 1,
-            title: "Socket Programming cơ bản với Python",
+            title: "Socket Programming cơ bản với Python: Hướng dẫn từ A-Z",
             date: "20/12/2025",
             cat: "CODE",
-            desc: "Cách tạo client-server đơn giản bằng thư viện socket.",
+            // Tạo ảnh tự động dựa trên từ khóa
+            image: "https://image.pollinations.ai/prompt/coding%20python%20socket%20network%20dark%20mode?width=800&height=400&nologo=true",
+            desc: "Khám phá cách tạo mô hình Client-Server đầu tiên của bạn sử dụng thư viện socket trong Python.",
             content: `
-                <p>Lập trình Socket là nền tảng của mọi ứng dụng mạng. Trong bài viết này, chúng ta sẽ đi sâu vào việc xây dựng một mô hình Client-Server đơn giản sử dụng Python.</p>
-                <h3>1. Socket là gì?</h3>
-                <p>Socket là một điểm cuối (endpoint) trong liên kết truyền thông hai chiều giữa hai chương trình chạy trên mạng.</p>
-                <h3>2. Code ví dụ: Echo Server</h3>
+                <p>Lập trình Socket (Socket Programming) là kỹ năng cốt lõi mà bất kỳ kỹ sư hệ thống hoặc lập trình viên Backend nào cũng cần phải nắm vững. Nó là nền tảng của mọi giao tiếp trên Internet ngày nay, từ việc bạn lướt web, gửi email cho đến chơi game online.</p>
+                <p>Trong bài viết này, chúng ta sẽ không chỉ dừng lại ở lý thuyết suông. Mình sẽ hướng dẫn các bạn từng bước để xây dựng một ứng dụng chat đơn giản giữa hai máy tính thông qua giao thức TCP/IP sử dụng ngôn ngữ Python.</p>
+
+                <h3>1. Socket là gì? Bản chất của kết nối mạng</h3>
+                <p>Hãy tưởng tượng Socket giống như một cái "ổ cắm" điện thoại. Để hai người có thể nói chuyện với nhau, mỗi người cần một cái điện thoại (Socket) và một đường dây kết nối (Network). Trong lập trình, Socket là một điểm cuối (endpoint) của liên kết truyền thông hai chiều giữa hai chương trình chạy trên mạng.</p>
+                <p>Một Socket được định danh bởi hai thông tin quan trọng:</p>
+                <ul>
+                    <li><strong>IP Address:</strong> Địa chỉ nhà của máy tính (Ví dụ: 192.168.1.5).</li>
+                    <li><strong>Port Number:</strong> Số hiệu cửa để vào đúng ứng dụng (Ví dụ: 80 cho Web, 22 cho SSH).</li>
+                </ul>
+
+                <h3>2. Quy trình "Bắt tay" (The Handshake) trong TCP</h3>
+                <p>Trước khi dữ liệu được gửi đi, Client và Server phải thiết lập kết nối. Quá trình này diễn ra như sau:</p>
+                <ul>
+                    <li><strong>Server:</strong> Đầu tiên, Server tạo một socket, gắn nó vào một cổng (Bind) và chuyển sang chế độ lắng nghe (Listen). Lúc này Server như một nhân viên lễ tân đang chờ khách.</li>
+                    <li><strong>Client:</strong> Client tạo socket và gửi yêu cầu kết nối (Connect) đến IP và Port của Server.</li>
+                    <li><strong>Accept:</strong> Khi Server nhận được yêu cầu, nó chấp nhận (Accept) và tạo ra một "đường ống" riêng để giao tiếp với Client đó.</li>
+                </ul>
+
+                <h3>3. Thực hành: Viết Echo Server bằng Python</h3>
+                <p>Chúng ta sẽ viết một Echo Server đơn giản: Client gửi gì, Server trả lại y hệt cái đó. Đây là "Hello World" của lập trình mạng.</p>
+                
+                <strong>File: server.py</strong>
                 <pre>import socket
-HOST = '127.0.0.1'
-PORT = 65432
-# Code Python minh họa kết nối socket...</pre>
-                <p>Đây là kỹ thuật cơ bản nhất để hai máy tính nói chuyện với nhau.</p>
+
+HOST = '127.0.0.1'  # Localhost (Chạy trên máy cá nhân)
+PORT = 65432        # Port lắng nghe (Nên chọn > 1024)
+
+# Tạo socket với IPv4 (AF_INET) và giao thức TCP (SOCK_STREAM)
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT)) # Gắn địa chỉ
+    s.listen()           # Bắt đầu lắng nghe
+    print(f"Server đang chờ kết nối tại {HOST}:{PORT}...")
+    
+    conn, addr = s.accept() # Chấp nhận kết nối
+    with conn:
+        print(f"Đã kết nối với: {addr}")
+        while True:
+            data = conn.recv(1024) # Nhận tối đa 1024 bytes
+            if not data:
+                break
+            print(f"Nhận được: {data.decode()}")
+            conn.sendall(data) # Gửi ngược lại cho Client</pre>
+
+                <h3>4. Xử lý Blocking và Non-blocking</h3>
+                <p>Đoạn code trên có một nhược điểm lớn: Nó là <strong>Blocking I/O</strong>. Tức là khi Server đang phục vụ Client A, nếu Client B kết nối đến, Client B sẽ phải chờ cho đến khi A thoát. Điều này không thể chấp nhận được trong thực tế.</p>
+                <p>Để giải quyết vấn đề này, chúng ta cần sử dụng kỹ thuật <strong>Multi-threading</strong> (Đa luồng) hoặc <strong>Asynchronous I/O</strong> (Bất đồng bộ - như thư viện <code>asyncio</code> trong Python hoặc NodeJS). Chúng ta sẽ bàn kỹ hơn về vấn đề này ở bài viết số 9 trong series này.</p>
+                
+                <h3>5. Tổng kết</h3>
+                <p>Qua bài viết này, bạn đã hiểu được vòng đời cơ bản của một Socket. Hãy thử chạy đoạn code trên, mở 2 cửa sổ terminal (1 chạy server, 1 chạy client) để thấy điều kỳ diệu xảy ra nhé!</p>
             `
         },
         {
             id: 2,
-            title: "Phân tích gói tin với Wireshark",
+            title: "Phân tích gói tin với Wireshark: Soi từng bit dữ liệu",
             date: "18/12/2025",
             cat: "TOOLS",
-            desc: "Hướng dẫn bắt và đọc các gói tin HTTP, TCP trong mạng LAN.",
+            image: "https://image.pollinations.ai/prompt/wireshark%20network%20packets%20analysis%20screen%20technology?width=800&height=400&nologo=true",
+            desc: "Học cách sử dụng Wireshark để bắt gói tin, debug lỗi mạng và hiểu sâu về giao thức TCP/IP.",
             content: `
-                <p>Wireshark giúp bạn "nhìn thấy" dòng chảy dữ liệu trong dây cáp mạng.</p>
-                <h3>Tại sao cần Wireshark?</h3>
-                <p>Khi lập trình mạng, nếu gói tin không đến nơi, bạn cần Wireshark để biết nó bị chặn ở đâu (Firewall, sai IP, hay mất gói).</p>
-                <h3>Bộ lọc quan trọng</h3>
+                <p>Nếu Socket Programming là cách bạn "xây dựng" ứng dụng mạng, thì Wireshark chính là chiếc kính hiển vi giúp bạn "nhìn thấu" những gì đang thực sự diễn ra bên trong dây cáp mạng. Wireshark là công cụ phân tích giao thức mạng (Network Protocol Analyzer) mạnh mẽ nhất thế giới hiện nay.</p>
+
+                <h3>1. Tại sao Lập trình viên cần Wireshark?</h3>
+                <p>Rất nhiều khi bạn viết code xong, chạy thử nhưng Client không kết nối được Server. Lỗi do đâu? Do code sai? Do Firewall chặn? Hay do gói tin bị méo mó trên đường truyền?</p>
+                <p>Wireshark giúp bạn trả lời các câu hỏi đó bằng cách bắt (capture) và hiển thị chi tiết từng bit dữ liệu đi qua card mạng. Bạn có thể nhìn thấy quá trình bắt tay 3 bước, nội dung file HTML được tải về, hay thậm chí là mật khẩu nếu chúng được gửi qua giao thức không mã hóa (HTTP/Telnet).</p>
+
+                <h3>2. Bắt đầu Capture gói tin</h3>
+                <p>Khi mở Wireshark, việc đầu tiên là chọn <strong>Interface</strong> (Card mạng). Nếu bạn dùng Wifi, hãy chọn "Wi-Fi". Nếu dùng dây, chọn "Ethernet".</p>
+                <p>Một khái niệm quan trọng là <strong>Promiscuous Mode</strong>. Chế độ này cho phép card mạng thu thập TẤT CẢ các gói tin đi ngang qua nó, kể cả các gói tin không gửi cho máy của bạn. Điều này rất hữu ích khi debug trong mạng LAN.</p>
+
+                <h3>3. Bộ lọc (Filters) - Kỹ năng sống còn</h3>
+                <p>Trong một giây, có thể có hàng ngàn gói tin chạy qua. Nếu không biết lọc, bạn sẽ bị ngợp trong biển dữ liệu. Dưới đây là các bộ lọc "thần thánh":</p>
                 <ul>
-                    <li><code>ip.addr == 192.168.1.5</code>: Lọc theo IP</li>
-                    <li><code>tcp.port == 80</code>: Lọc Web Traffic</li>
+                    <li><code>ip.addr == 192.168.1.50</code>: Chỉ hiện các gói tin đi đến HOẶC đi từ IP này.</li>
+                    <li><code>tcp.port == 80</code>: Chỉ hiện giao thông Web (HTTP).</li>
+                    <li><code>http.request.method == "POST"</code>: Tìm các yêu cầu gửi dữ liệu (như đăng nhập, upload form).</li>
+                    <li><code>dns</code>: Chỉ xem các truy vấn tên miền.</li>
                 </ul>
+
+                <h3>4. Phân tích quá trình bắt tay 3 bước (3-Way Handshake)</h3>
+                <p>Hãy thử lọc <code>tcp</code> và truy cập một website. Bạn sẽ thấy 3 gói tin đầu tiên luôn tuân theo quy tắc:</p>
+                <ol>
+                    <li><strong>SYN:</strong> Client gửi lời chào ("Em muốn kết nối với anh"). Sequence = 0.</li>
+                    <li><strong>SYN, ACK:</strong> Server trả lời ("Ok, anh đồng ý, đây là số thứ tự của anh"). Ack = 1.</li>
+                    <li><strong>ACK:</strong> Client xác nhận ("Ok, bắt đầu gửi dữ liệu nhé").</li>
+                </ol>
+                <p>Nếu bạn thấy gói tin màu đỏ có cờ <strong>RST (Reset)</strong>, nghĩa là kết nối đã bị từ chối thẳng thừng (thường do Server chưa mở port hoặc Firewall chặn).</p>
+
+                <h3>5. Tính năng "Follow TCP Stream"</h3>
+                <p>Đây là tính năng hay nhất của Wireshark. Chuột phải vào một gói tin bất kỳ -> Chọn <strong>Follow -> TCP Stream</strong>. Wireshark sẽ ghép nối toàn bộ các gói tin rời rạc thành một đoạn hội thoại hoàn chỉnh mà con người có thể đọc được (như nội dung trang web HTML, hoặc đoạn chat).</p>
             `
         },
         {
             id: 3,
-            title: "Mô hình OSI vs TCP/IP",
+            title: "Mô hình OSI vs TCP/IP: Lý thuyết và Thực tế",
             date: "15/12/2025",
             cat: "THEORY",
-            desc: "Sự khác biệt thực tế giữa lý thuyết và triển khai hiện đại.",
+            image: "https://image.pollinations.ai/prompt/osi%20model%20layers%20network%20diagram%20futuristic?width=800&height=400&nologo=true",
+            desc: "Tại sao trường học dạy OSI 7 tầng nhưng thực tế lại dùng TCP/IP 4 tầng? Cùng tìm hiểu sự thật.",
             content: `
-                <p>Lý thuyết dạy 7 tầng (OSI), nhưng thực tế Internet chạy 4 tầng (TCP/IP).</p>
-                <h3>Quá trình đóng gói dữ liệu:</h3>
+                <p>Bất kỳ sinh viên CNTT nào cũng từng phải học thuộc lòng mô hình OSI 7 tầng: "Physical, Data Link, Network, Transport, Session, Presentation, Application". Tuy nhiên, khi đi làm, bạn lại nghe các kỹ sư nói về TCP/IP nhiều hơn. Vậy sự khác biệt là gì?</p>
+
+                <h3>1. Mô hình OSI (7 Tầng) - Chuẩn mực lý thuyết</h3>
+                <p>OSI (Open Systems Interconnection) là mô hình tham chiếu được tạo ra bởi tổ chức ISO. Nó rất chi tiết và phân tách rõ ràng trách nhiệm của từng tầng. Tuy nhiên, nó quá phức tạp để triển khai thực tế. Ví dụ, tầng Session và Presentation thường có chức năng chồng chéo và ít khi được tách biệt rạch ròi trong code.</p>
+
+                <h3>2. Mô hình TCP/IP (4 Tầng) - Kẻ chiến thắng thực tế</h3>
+                <p>Internet hiện đại chạy trên bộ giao thức TCP/IP. Nó gom gọn lại chỉ còn 4 tầng:</p>
+                <ul>
+                    <li><strong>Tầng 4: Application (Ứng dụng):</strong> Tương ứng với 3 tầng trên cùng của OSI (App, Presentation, Session). Đây là nơi các giao thức như HTTP, FTP, SMTP, DNS hoạt động. Dữ liệu ở đây gọi là <em>Data</em>.</li>
+                    <li><strong>Tầng 3: Transport (Giao vận):</strong> Tương ứng tầng Transport của OSI. Chịu trách nhiệm đảm bảo độ tin cậy (TCP) hoặc tốc độ (UDP). Dữ liệu ở đây gọi là <em>Segment</em>.</li>
+                    <li><strong>Tầng 2: Internet (Mạng):</strong> Tương ứng tầng Network của OSI. Chịu trách nhiệm định tuyến, tìm đường đi (IP Address). Dữ liệu ở đây gọi là <em>Packet</em>.</li>
+                    <li><strong>Tầng 1: Network Access (Truy nhập mạng):</strong> Gộp tầng Data Link và Physical. Chịu trách nhiệm truyền tín hiệu vật lý qua dây cáp/sóng (MAC Address). Dữ liệu ở đây gọi là <em>Frame</em>.</li>
+                </ul>
+
+                <h3>3. Quá trình Đóng gói dữ liệu (Encapsulation)</h3>
+                <p>Hãy tưởng tượng bạn gửi một lá thư (Dữ liệu). Quá trình đi qua các tầng giống như việc bỏ lá thư vào các phong bì lồng nhau:</p>
                 <ol>
-                    <li>Application: Tạo dữ liệu (HTTP)</li>
-                    <li>Transport: Thêm cổng (TCP Port)</li>
-                    <li>Internet: Thêm địa chỉ IP</li>
-                    <li>Network Access: Thêm địa chỉ MAC</li>
+                    <li><strong>Application:</strong> Viết nội dung thư.</li>
+                    <li><strong>Transport:</strong> Ghi thêm số cổng (Port) nguồn và đích vào tiêu đề TCP.</li>
+                    <li><strong>Internet:</strong> Ghi thêm địa chỉ IP nguồn và đích vào tiêu đề IP.</li>
+                    <li><strong>Network Access:</strong> Ghi thêm địa chỉ MAC nguồn và đích, sau đó biến đổi thành tín hiệu điện (0 và 1) để truyền đi.</li>
                 </ol>
+                <p>Khi sang máy đích, quá trình diễn ra ngược lại (Decapsulation): Máy nhận bóc từng lớp vỏ phong bì ra để lấy được nội dung thư bên trong.</p>
+
+                <h3>4. Tại sao cần hiểu điều này?</h3>
+                <p>Hiểu về các tầng giúp bạn Debug lỗi cực nhanh. Ví dụ:
+                <br>- Ping được IP (Tầng Internet thông) nhưng không vào được Web (Tầng App/Transport lỗi) -> Kiểm tra Port 80 hoặc Web Server.
+                <br>- Không Ping được (Tầng Internet lỗi) -> Kiểm tra dây cáp, IP, Subnet Mask.</p>
             `
         },
         {
             id: 4,
-            title: "Xây dựng HTTP Server từ con số 0",
+            title: "Xây dựng HTTP Server từ con số 0 (No Framework)",
             date: "10/12/2025",
             cat: "CODE",
-            desc: "Hiểu sâu về giao thức HTTP bằng cách tự viết server.",
+            image: "https://image.pollinations.ai/prompt/http%20server%20code%20matrix%20style?width=800&height=400&nologo=true",
+            desc: "Thử thách tự viết một Web Server xử lý HTTP Request mà không dùng bất kỳ thư viện hỗ trợ nào.",
             content: `
-                <p>Thay vì dùng Apache hay Nginx, hãy thử tự viết server để hiểu bản chất.</p>
-                <h3>HTTP Header trông như thế nào?</h3>
+                <p>Chúng ta thường dùng Apache, Nginx, Tomcat hay NodeJS Express để chạy web. Nhưng bạn có bao giờ tự hỏi: Bên dưới lớp vỏ hào nhoáng đó, Server thực sự làm gì? Hôm nay, chúng ta sẽ tự tay viết một HTTP Server thô sơ bằng Python thuần.</p>
+
+                <h3>1. HTTP thực chất là Text (Văn bản)</h3>
+                <p>Khác với các giao thức nhị phân phức tạp, HTTP là giao thức dạng Text-based. Nó rất dễ đọc. Khi trình duyệt gửi yêu cầu đến Server, nó gửi một chuỗi văn bản trông như thế này:</p>
                 <pre>GET /index.html HTTP/1.1
-Host: localhost
-User-Agent: Mozilla/5.0...</pre>
-                <p>Server của bạn phải đọc chuỗi văn bản này và trả về file HTML tương ứng.</p>
+Host: localhost:8080
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)...
+Accept: text/html,application/xhtml+xml...</pre>
+                <p>Nhiệm vụ của Web Server là: Lắng nghe Port 80, nhận chuỗi văn bản này, phân tích (Parse) nó để biết khách hàng muốn gì (GET cái gì?), và trả lời lại.</p>
+
+                <h3>2. Cấu trúc của HTTP Response</h3>
+                <p>Sau khi tìm thấy file <code>index.html</code> trong ổ cứng, Server phải trả về dữ liệu theo đúng định dạng chuẩn HTTP:</p>
+                <pre>HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 154
+
+&lt;html&gt;
+  &lt;body&gt;&lt;h1&gt;Xin chào, đây là Server tự viết!&lt;/h1&gt;&lt;/body&gt;
+&lt;/html&gt;</pre>
+                <p>Dòng đầu tiên là Status Code (200 OK). Tiếp theo là các Headers (Meta-data) để báo cho trình duyệt biết đây là file HTML, độ dài bao nhiêu. Cuối cùng, sau một dòng trống, là nội dung thực sự.</p>
+
+                <h3>3. Thử thách Logic cho bạn</h3>
+                <p>Khi viết Server này, bạn sẽ đối mặt với các vấn đề thú vị:</p>
+                <ul>
+                    <li><strong>Routing:</strong> Làm sao để biết user gõ <code>/about</code> thì trả về file <code>about.html</code>? Bạn phải xử lý chuỗi (String manipulation).</li>
+                    <li><strong>Error Handling:</strong> Nếu user hỏi file <code>khong-ton-tai.html</code>, bạn phải kiểm tra file có tồn tại không. Nếu không, phải trả về Header <code>HTTP/1.1 404 Not Found</code>.</li>
+                    <li><strong>Concurrency:</strong> Nếu 2 người truy cập cùng lúc thì sao? Code đơn giản sẽ bị treo (Block). Bạn phải dùng Threading để mỗi người một luồng.</li>
+                </ul>
+                <p>Dự án nhỏ này sẽ giúp bạn hiểu sâu sắc về Status Code, Header và cách Web hoạt động hơn bất kỳ khóa học lý thuyết nào.</p>
             `
         },
         {
             id: 5,
-            title: "Load Balancing là gì?",
+            title: "Load Balancing: Nghệ thuật phân chia công việc",
             date: "05/12/2025",
             cat: "SYSTEM",
-            desc: "Các thuật toán cân bằng tải: Round Robin, Least Connections.",
+            image: "https://image.pollinations.ai/prompt/server%20load%20balancer%20technology%20datacenter%20blue?width=800&height=400&nologo=true",
+            desc: "Khi một server là không đủ, chúng ta cần Load Balancing. Tìm hiểu về Round Robin, Least Connections.",
             content: `
-                <p>Khi 1 server không chịu nổi 1 triệu user, ta cần Load Balancer.</p>
-                <h3>Các thuật toán phổ biến:</h3>
+                <p>Một ngày đẹp trời, website của bạn bỗng nhiên nổi tiếng (Viral). Lượng truy cập tăng từ 100 người/ngày lên 1 triệu người/ngày. Server duy nhất của bạn bắt đầu bốc khói: CPU 100%, RAM tràn, website quay đều không tải được. Giải pháp là gì? Mua Server mạnh hơn (Vertical Scaling) hay mua thêm nhiều Server (Horizontal Scaling)?</p>
+                <p>Trong thế giới hiện đại, người ta chọn cách thứ 2: Mua nhiều server thường và dùng <strong>Load Balancer</strong> (Bộ cân bằng tải).</p>
+
+                <h3>1. Load Balancer hoạt động như thế nào?</h3>
+                <p>Load Balancer (LB) giống như một cảnh sát giao thông đứng trước cửa ngõ hệ thống. Người dùng không kết nối trực tiếp vào các Server xử lý (Backend), mà kết nối vào LB. LB sẽ quyết định xem nên chuyển hướng người dùng này đến Server 1, Server 2 hay Server 3.</p>
+
+                <h3>2. Các thuật toán cân bằng tải phổ biến</h3>
+                <p>Làm sao LB biết nên chuyển khách vào đâu? Nó dùng thuật toán:</p>
                 <ul>
-                    <li><strong>Round Robin:</strong> Chia đều lần lượt từng người.</li>
-                    <li><strong>Least Connections:</strong> Ai đang rảnh nhất thì giao việc.</li>
-                    <li><strong>IP Hash:</strong> User A luôn vào Server A (để giữ phiên đăng nhập).</li>
+                    <li><strong>Round Robin (Vòng tròn):</strong> Chia đều bài chia bài. Request 1 vào Server A, Request 2 vào Server B, Request 3 vào Server C, rồi quay lại A. Cách này công bằng nhưng mù quáng (không biết Server nào đang yếu/mạnh).</li>
+                    <li><strong>Weighted Round Robin:</strong> Gán trọng số. Server A mạnh gấp đôi Server B, nên A nhận 2 request thì B mới nhận 1.</li>
+                    <li><strong>Least Connections (Ít kết nối nhất):</strong> Thông minh hơn. LB theo dõi xem Server nào đang "rảnh" nhất (đang xử lý ít request nhất) thì đưa khách mới vào đó.</li>
+                    <li><strong>IP Hash:</strong> Rất quan trọng cho các ứng dụng cần đăng nhập. Nó dùng IP của người dùng để tính toán, đảm bảo ông A hôm nay vào Server 1 thì ngày mai vẫn vào Server 1 (để giữ Session đăng nhập).</li>
+                </ul>
+
+                <h3>3. Layer 4 vs Layer 7 Load Balancing</h3>
+                <ul>
+                    <li><strong>Layer 4 (Transport):</strong> LB chỉ nhìn vào IP và Port. Nó hoạt động cực nhanh, chỉ đơn thuần là chuyển tiếp gói tin (NAT).</li>
+                    <li><strong>Layer 7 (Application):</strong> LB thông minh hơn, nó "bóc" gói tin ra đọc nội dung HTTP. Nó có thể làm những việc như: Nếu đường dẫn là <code>/images</code> thì chuyển qua Server chứa ảnh, nếu là <code>/api</code> thì chuyển qua Server xử lý logic. Nginx và HAProxy là vua ở tầng này.</li>
                 </ul>
             `
         },
         {
             id: 6,
-            title: "Websocket vs REST API",
+            title: "Websocket vs REST API: Cuộc chiến Real-time",
             date: "01/12/2025",
             cat: "WEB",
-            desc: "Khi nào cần giao tiếp thời gian thực?",
+            image: "https://image.pollinations.ai/prompt/websocket%20connection%20speed%20data%20stream?width=800&height=400&nologo=true",
+            desc: "Khi nào nên dùng HTTP truyền thống? Khi nào cần Websocket cho ứng dụng Chat, Game?",
             content: `
-                <p>REST là hỏi-đáp. WebSocket là đàm thoại liên tục.</p>
-                <p>Dùng WebSocket cho: Game Online, Chat App, Chứng khoán.</p>
-                <p>Dùng REST cho: Web tin tức, Blog, Thương mại điện tử.</p>
+                <p>Trong phát triển Web truyền thống, mô hình giao tiếp luôn là <strong>Request-Response</strong> (Hỏi-Đáp). Client (Trình duyệt) luôn là người chủ động: "Cho tôi xem trang chủ", Server trả lời. Server không bao giờ tự nhiên nói chuyện với Client nếu không được hỏi trước.</p>
+                <p>Nhưng nếu bạn làm ứng dụng Chat, Game Online hay Bảng giá chứng khoán thì sao? Bạn cần dữ liệu cập nhật ngay lập tức (Real-time). Nếu dùng HTTP, Client phải liên tục hỏi "Có tin nhắn mới không?" mỗi 1 giây (gọi là Polling). Cách này cực kỳ tốn tài nguyên và độ trễ cao.</p>
+
+                <h3>1. WebSocket: Đường dây nóng 2 chiều</h3>
+                <p>WebSocket ra đời để giải quyết vấn đề này. Nó là giao thức <strong>Full-duplex</strong> (Song công toàn phần). Sau khi thiết lập kết nối, Client và Server có thể gửi dữ liệu cho nhau BẤT CỨ LÚC NÀO, không cần chờ người kia hỏi.</p>
+                
+                <h3>2. Quá trình bắt tay (Handshake)</h3>
+                <p>WebSocket bắt đầu cuộc đời mình bằng một HTTP Request bình thường, nhưng có kèm header đặc biệt:</p>
+                <pre>GET /chat HTTP/1.1
+Upgrade: websocket
+Connection: Upgrade</pre>
+                <p>Nếu Server hỗ trợ, nó sẽ trả về mã <strong>101 Switching Protocols</strong>. Kể từ giây phút đó, kết nối TCP được giữ nguyên (Persistent Connection) và họ chuyển sang nói chuyện bằng giao thức WebSocket (nhị phân) thay vì HTTP.</p>
+
+                <h3>3. Khi nào dùng cái nào?</h3>
+                <ul>
+                    <li><strong>Dùng REST API (HTTP):</strong> Cho các tác vụ CRUD truyền thống (Tạo, Đọc, Sửa, Xóa). Ví dụ: Load danh sách bài viết, Đăng ký tài khoản, Xem profile. Lý do: Dễ Caching, dễ triển khai, chuẩn hóa tốt.</li>
+                    <li><strong>Dùng WebSocket:</strong> Cho các tác vụ cần độ trễ thấp và cập nhật liên tục. Ví dụ: Chat app, Game online nhiều người chơi, Thông báo (Notification), Giám sát hệ thống thời gian thực.</li>
+                </ul>
+                <p>Trong các hệ thống lớn, người ta thường kết hợp cả hai: Dùng REST để lấy lịch sử tin nhắn cũ, và dùng WebSocket để nhận tin nhắn mới.</p>
             `
         },
         {
             id: 7,
-            title: "Bảo mật mạng với Firewall (iptables)",
+            title: "Bảo mật mạng với Firewall: Lá chắn Iptables",
             date: "28/11/2025",
             cat: "SECURITY",
-            desc: "Cấu hình iptables cơ bản trên Linux.",
+            image: "https://image.pollinations.ai/prompt/firewall%20cyber%20security%20shield%20server%20protection?width=800&height=400&nologo=true",
+            desc: "Hướng dẫn cấu hình tường lửa Iptables trên Linux để chặn đứng các kết nối độc hại.",
             content: `
-                <p>Linux có sẵn tường lửa cực mạnh là iptables.</p>
-                <pre># Chặn toàn bộ kết nối vào
-iptables -P INPUT DROP
-# Chỉ mở cổng Web (80)
-iptables -A INPUT -p tcp --dport 80 -j ACCEPT</pre>
+                <p>Khi bạn đưa một Server lên Internet, chỉ trong vòng vài phút, sẽ có hàng ngàn con Bot tự động dò quét (Scan) để tìm lỗ hổng. Nếu không có biện pháp bảo vệ, Server của bạn sẽ sớm trở thành nạn nhân. Tuyến phòng thủ đầu tiên và quan trọng nhất chính là <strong>Firewall (Tường lửa)</strong>.</p>
+                <p>Trên Linux, công cụ tường lửa kinh điển nhất là <strong>iptables</strong>. Nó hoạt động ngay trong nhân (kernel) của hệ điều hành, cho phép kiểm soát từng gói tin đi vào và đi ra.</p>
+
+                <h3>1. Cơ chế hoạt động: Chains và Tables</h3>
+                <p>Iptables tổ chức các luật (rules) vào các "Dây xích" (Chains). 3 Chain quan trọng nhất là:</p>
+                <ul>
+                    <li><strong>INPUT:</strong> Kiểm soát các gói tin ĐẾN server của bạn. (Ví dụ: Khách truy cập web).</li>
+                    <li><strong>OUTPUT:</strong> Kiểm soát các gói tin TỪ server đi ra ngoài. (Ví dụ: Server tải update).</li>
+                    <li><strong>FORWARD:</strong> Kiểm soát các gói tin đi NGANG QUA server (Dùng khi Server làm Router).</li>
+                </ul>
+
+                <h3>2. Nguyên tắc vàng: "Cấm tất cả, mở vài cái"</h3>
+                <p>Một sai lầm của người mới là "Mở tất cả, chặn cái xấu". Không ai biết hết cái xấu là gì. Chiến lược bảo mật tốt nhất là <strong>Default Drop</strong>: Mặc định vứt bỏ mọi gói tin, chỉ cho phép những gì mình biết rõ.</p>
+                <pre># 1. Cho phép các kết nối đã thiết lập (Để không tự ngắt kết nối SSH của chính mình!)
+iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# 2. Cho phép giao tiếp nội bộ (Localhost)
+iptables -A INPUT -i lo -j ACCEPT
+
+# 3. Mở cổng SSH (22) - Quan trọng để quản trị
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# 4. Mở cổng Web (80 và 443)
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+# 5. Cấm tất cả những thứ còn lại
+iptables -P INPUT DROP</pre>
+
+                <h3>3. Chống tấn công DoS cơ bản</h3>
+                <p>Bạn cũng có thể dùng iptables để giới hạn tốc độ kết nối. Ví dụ: Nếu một IP kết nối quá 10 lần trong 1 phút -> Chặn IP đó. Điều này giúp giảm thiểu rủi ro từ các cuộc tấn công Brute-force mật khẩu SSH.</p>
             `
         },
         {
             id: 8,
-            title: "Tìm hiểu về DNS Lookup",
+            title: "Hành trình của một DNS Request",
             date: "25/11/2025",
             cat: "NETWORK",
-            desc: "Quy trình phân giải tên miền.",
+            image: "https://image.pollinations.ai/prompt/dns%20server%20global%20network%20map?width=800&height=400&nologo=true",
+            desc: "Điều gì thực sự xảy ra khi bạn gõ google.com vào trình duyệt? Bí ẩn về hệ thống phân giải tên miền.",
             content: `
-                <p>DNS là danh bạ của Internet.</p>
-                <p>Khi bạn gõ google.com -> Máy hỏi DNS Server -> DNS trả về IP 142.250.x.x -> Máy kết nối tới IP đó.</p>
+                <p>DNS (Domain Name System) được ví như danh bạ điện thoại của Internet. Máy tính không hiểu tên miền như "google.com", nó chỉ hiểu địa chỉ IP (như 142.250.1.1). DNS giúp dịch từ tên người đọc sang số máy tính đọc.</p>
+                <p>Tuy nhiên, quá trình này phức tạp hơn bạn nghĩ. Khi bạn gõ enter, một hành trình truy tìm kho báu bắt đầu:</p>
+
+                <h3>1. Kiểm tra Cache (Bộ nhớ đệm)</h3>
+                <p>Trước khi hỏi ai đó, máy tính sẽ kiểm tra trí nhớ của mình trước:</p>
+                <ol>
+                    <li><strong>Browser Cache:</strong> Trình duyệt chrome lưu lại IP các trang bạn vừa vào.</li>
+                    <li><strong>OS Cache:</strong> Hệ điều hành (Windows/Linux) cũng có file hosts và bộ nhớ DNS riêng.</li>
+                    <li><strong>Router Cache:</strong> Cục Wifi nhà bạn cũng lưu cache DNS.</li>
+                </ol>
+
+                <h3>2. Hỏi ISP (Resolver Server)</h3>
+                <p>Nếu không có trong Cache, máy tính gửi yêu cầu đến nhà mạng (Viettel/FPT) hoặc DNS công cộng (Google 8.8.8.8). Server này gọi là Resolver. Nếu Resolver biết, nó trả lời ngay. Nếu không, nó sẽ thay mặt bạn đi hỏi các "Sếp lớn".</p>
+
+                <h3>3. Truy vấn phân cấp (Hierarchical Lookup)</h3>
+                <ul>
+                    <li><strong>Root Server (.):</strong> Resolver hỏi Root Server: "Ông biết .com nằm ở đâu không?". Root chỉ đường đến TLD Server quản lý đuôi .com.</li>
+                    <li><strong>TLD Server (.com):</strong> Resolver hỏi TLD: "Ông biết google.com ở đâu không?". TLD chỉ đường đến Authoritative Server quản lý google.com.</li>
+                    <li><strong>Authoritative Server:</strong> Đây là nơi chứa thông tin chính chủ. Nó trả lời: "IP của google.com là 142.250.1.1".</li>
+                </ul>
+                <p>Cuối cùng, Resolver mang IP đó về cho máy bạn, và lưu vào cache để lần sau đỡ phải đi hỏi lòng vòng.</p>
+
+                <h3>4. Các loại Record phổ biến</h3>
+                <ul>
+                    <li><strong>A Record:</strong> Tên -> IP v4 (Phổ biến nhất).</li>
+                    <li><strong>AAAA Record:</strong> Tên -> IP v6.</li>
+                    <li><strong>CNAME:</strong> Tên giả -> Tên thật (Alias). Ví dụ www.google.com trỏ về google.com.</li>
+                    <li><strong>MX Record:</strong> Dùng cho gửi nhận Email.</li>
+                </ul>
             `
         },
         {
             id: 9,
-            title: "Đa luồng (Multi-threading) trong Server",
+            title: "Multi-threading: Xử lý đa luồng trong Server",
             date: "20/11/2025",
             cat: "CODE",
-            desc: "Xử lý nhiều kết nối đồng thời.",
+            image: "https://image.pollinations.ai/prompt/cpu%20multithreading%20process%20visualization%20neon?width=800&height=400&nologo=true",
+            desc: "Giải quyết bài toán C10K: Làm sao để phục vụ 10.000 user cùng lúc mà không bị treo?",
             content: `
-                <p>Nếu không dùng đa luồng, server chỉ phục vụ được 1 người tại 1 thời điểm.</p>
-                <p>Giải pháp: Mỗi khi có khách mới, server "nhân bản" ra một luồng xử lý riêng (Thread) để phục vụ khách đó.</p>
+                <p>Trong bài viết đầu tiên về Socket, chúng ta đã thấy Server bị "đơ" (Blocking) khi phục vụ một client. Người đến sau phải xếp hàng chờ người trước xong việc. Để giải quyết, chúng ta cần <strong>Concurrency (Xử lý đồng thời)</strong>.</p>
+
+                <h3>1. Thread (Luồng) là gì?</h3>
+                <p>Hãy tưởng tượng Server là một nhà hàng. Nếu chỉ có 1 nhân viên (Single Thread), anh ta phải làm từ A-Z: Nhận order, nấu ăn, bưng bê, tính tiền. Khách thứ 2 sẽ phải chờ rất lâu.</p>
+                <p>Multi-threading giống như việc thuê thêm nhân viên. Mỗi khi có khách mới vào (Client connect), quản lý sẽ điều một nhân viên riêng (New Thread) ra phục vụ khách đó. Nhân viên cũ quay lại cửa đón khách tiếp theo.</p>
+
+                <h3>2. Code Python ví dụ dùng Threading</h3>
+                <pre>import socket
+import threading
+
+def handle_client(conn, addr):
+    # Hàm này chạy trong một luồng riêng biệt
+    print(f"New connection: {addr}")
+    # Xử lý gửi nhận tin nhắn ở đây...
+    conn.close()
+
+server = socket.socket()
+server.bind(('0.0.0.0', 9999))
+server.listen()
+
+while True:
+    conn, addr = server.accept()
+    # Thay vì xử lý ngay, ta tạo luồng mới
+    t = threading.Thread(target=handle_client, args=(conn, addr))
+    t.start()
+    print(f"Đang phục vụ: {threading.active_count() - 1} khách.")</pre>
+
+                <h3>3. Cái giá của Đa luồng</h3>
+                <p>Nghe có vẻ tuyệt vời, nhưng tạo Thread không miễn phí. Mỗi Thread ngốn RAM (Stack memory) và CPU phải tốn công chuyển đổi qua lại giữa các Thread (Context Switching). Nếu có 10.000 khách (C10K problem), tạo 10.000 thread sẽ làm sập Server.</p>
+                <p>Đó là lý do các công nghệ mới như <strong>Asynchronous I/O</strong> (NodeJS, Nginx, Go Routines) ra đời. Thay vì tạo nhiều nhân viên, họ dùng 1 nhân viên siêu nhân (Event Loop) làm việc cực nhanh, không bao giờ ngồi chờ (Non-blocking).</p>
             `
         },
         {
             id: 10,
-            title: "SSH Key và cơ chế xác thực",
+            title: "SSH Key: Tại sao nên vứt bỏ mật khẩu?",
             date: "15/11/2025",
             cat: "SECURITY",
-            desc: "Tại sao nên dùng SSH Key thay vì mật khẩu?",
+            image: "https://image.pollinations.ai/prompt/cryptography%20ssh%20key%20security%20lock%20cyberpunk?width=800&height=400&nologo=true",
+            desc: "Cơ chế xác thực bằng mã hóa bất đối xứng giúp bảo vệ Server khỏi tấn công Brute-force.",
             content: `
-                <p>Mật khẩu có thể bị đoán mò (Brute-force). SSH Key dùng toán học mã hóa để xác thực, an toàn hơn gấp ngàn lần.</p>
-                <p>Bạn giữ chìa khóa bí mật (Private Key), server giữ ổ khóa công khai (Public Key).</p>
+                <p>Khi thuê VPS (Cloud Server), việc đầu tiên bạn nhận được là IP và mật khẩu root. Việc thứ hai bạn nên làm là: <strong>Tắt ngay chức năng đăng nhập bằng mật khẩu</strong> và chuyển sang dùng SSH Key.</p>
+
+                <h3>1. Tại sao mật khẩu không an toàn?</h3>
+                <p>Mật khẩu có thể bị đoán. Hacker dùng các tool tự động (như Hydra) thử hàng triệu mật khẩu mỗi giây (Brute-force attack). Dù mật khẩu bạn dài 10 ký tự, nó vẫn có nguy cơ bị dò ra. Hơn nữa, bạn phải gõ mật khẩu mỗi lần đăng nhập, rất phiền phức và dễ bị lộ nếu có keylogger.</p>
+
+                <h3>2. SSH Key hoạt động như thế nào?</h3>
+                <p>SSH Key sử dụng <strong>Mã hóa bất đối xứng (Asymmetric Encryption)</strong>. Nó bao gồm một cặp chìa khóa:</p>
+                <ul>
+                    <li><strong>Public Key (Ổ khóa):</strong> Bạn upload cái này lên Server (lưu vào file <code>~/.ssh/authorized_keys</code>). Ai cũng có thể thấy nó, không sao cả.</li>
+                    <li><strong>Private Key (Chìa khóa):</strong> Bạn giữ khư khư trong máy tính cá nhân của mình. KHÔNG BAO GIỜ chia sẻ cho ai.</li>
+                </ul>
+                <p><strong>Quy trình đăng nhập:</strong></p>
+                <ol>
+                    <li>Bạn: "Alo Server, cho tôi vào với user root".</li>
+                    <li>Server: "Tôi thấy ông có để lại cái Ổ khóa (Public Key) ở đây. Tôi sẽ tạo ra một câu đố ngẫu nhiên, khóa nó bằng Ổ khóa này. Nếu ông mở được thì tôi tin ông."</li>
+                    <li>Bạn: Dùng Chìa khóa bí mật (Private Key) để mở khóa câu đố và gửi đáp án lại.</li>
+                    <li>Server: "Đáp án đúng! Mời vào."</li>
+                </ol>
+                <p>Quá trình này diễn ra trong tích tắc và không ai có thể giả mạo được nếu không có file Private Key của bạn.</p>
+
+                <h3>3. Cách tạo SSH Key</h3>
+                <p>Trên Linux/Mac hoặc Windows (Git Bash/PowerShell), gõ:</p>
+                <pre>ssh-keygen -t rsa -b 4096</pre>
+                <p>Nó sẽ tạo ra 2 file: <code>id_rsa</code> (Private) và <code>id_rsa.pub</code> (Public). Hãy copy nội dung file .pub lên server và tận hưởng sự an toàn tuyệt đối!</p>
             `
         }
     ];
 
-    // 1. HIỂN THỊ DANH SÁCH BÀI VIẾT RA NGOÀI
+    // --- LOGIC HIỂN THỊ ---
     const listContainer = document.getElementById('blog-list');
-    
+    const modal = document.getElementById("postModal");
+    const mImg = document.getElementById("m-img");
+    const mTitle = document.getElementById("m-title");
+    const mTag = document.getElementById("m-tag");
+    const mDate = document.getElementById("m-date");
+    const mContent = document.getElementById("m-content");
+
+    // Render danh sách bài viết ra màn hình
     posts.forEach(post => {
         listContainer.innerHTML += `
             <article class="card">
-                <span class="tag">${post.cat} • ${post.date}</span>
-                <h3>${post.title}</h3>
-                <p>${post.desc}</p>
-                <button class="read-more-btn" onclick="openModal(${post.id})">Đọc chi tiết →</button>
+                <img src="${post.image}" class="card-img-top" alt="${post.title}" loading="lazy">
+                <div class="card-body">
+                    <span class="tag">${post.cat} • ${post.date}</span>
+                    <h3>${post.title}</h3>
+                    <p>${post.desc}</p>
+                    <button class="read-more-btn" onclick="openModal(${post.id})">Đọc chi tiết →</button>
+                </div>
             </article>
         `;
     });
 
-    // 2. CÁC HÀM XỬ LÝ POPUP
-    const modal = document.getElementById("postModal");
-    const mTitle = document.getElementById("m-title");
-    const mTag = document.getElementById("m-tag");
-    const mDate = document.getElementById("m-date");
-    const mBody = document.getElementById("m-body");
-
     // Hàm mở Popup
     function openModal(id) {
-        // Tìm bài viết trong mảng dữ liệu
         const post = posts.find(p => p.id === id);
-        
         if(post) {
-            // Điền dữ liệu vào Popup
+            mImg.src = post.image; // Set ảnh bìa
             mTitle.innerText = post.title;
             mTag.innerText = post.cat;
-            mDate.innerText = "Ngày đăng: " + post.date;
-            mBody.innerHTML = post.content;
+            mDate.innerText = post.date;
+            mContent.innerHTML = post.content;
             
-            // Hiện Popup (dùng Flex để căn giữa)
             modal.style.display = "flex";
-            
-            // Khóa cuộn trang web bên dưới
-            document.body.style.overflow = "hidden";
+            document.body.style.overflow = "hidden"; // Khóa cuộn trang
         }
     }
 
     // Hàm đóng Popup
     function closeModal() {
         modal.style.display = "none";
-        document.body.style.overflow = "auto"; // Mở lại cuộn trang
+        document.body.style.overflow = "auto";
+        // Xóa src ảnh để tiết kiệm bộ nhớ
+        setTimeout(() => mImg.src = "", 200);
     }
 
-    // Khi click ra ngoài vùng trắng của popup thì cũng đóng lại
+    // Đóng khi click ra ngoài
     window.onclick = function(event) {
-        if (event.target == modal) {
-            closeModal();
-        }
+        if (event.target == modal) closeModal();
     }
 </script>
 
