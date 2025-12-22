@@ -1,4 +1,5 @@
-const blogdata = [
+// ĐỔI TÊN BIẾN THÀNH postsData CHO KHÁC BIỆT
+const postsData = [
   {
     id: 1,
     title: "Socket Programming cơ bản với Python",
